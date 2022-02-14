@@ -1,15 +1,27 @@
 import React, { useReducer } from "react";
 
 import CartContext from "./cart-context";
+import {DUMMY_MEALS} from './cart-context'
 
 const defaultCartState = {
     items: [],
-    totalAmount: 0
+    totalAmount: 0,
+    allItems: DUMMY_MEALS
 }
 
 const cartReducer = (state, action) => {
+
+    // if (action.type === 'ADD_TO_LIST') {
+    //     const newArray = [...state.allItems, action.item];
+    //     return {
+    //         ...state,
+    //         allItems:newArray,
+    //     };
+    // }
+
     if (action.type === 'ADD') {
         
+
         const updatedTotalAmount = state.totalAmount + action.item.price * action.item.amount;
 
         const existingCartItemIndex = state.items.findIndex(item => item.id === action.item.id);
@@ -31,6 +43,7 @@ const cartReducer = (state, action) => {
 
         
         return {
+            ...state,
             items: updatedItems,
             totalAmount: updatedTotalAmount
         };
@@ -49,16 +62,23 @@ const cartReducer = (state, action) => {
         }
 
         return {
+            ...state,
             items: updatedItems,
             totalAmount: updatedTotalAmount,
         }
     }
+
+    
 
     return defaultCartState;
 }
 
 const CartProvider = props => {
     const [cartState, dispatchCartAction] = useReducer(cartReducer, defaultCartState);
+
+    // const addItemToList = item => {
+    //     dispatchCartAction({type: 'ADD_TO_LIST', item: item})
+    // };
 
     const addItemToCartHandler = item => {
         dispatchCartAction({type: 'ADD', item: item})
@@ -72,7 +92,10 @@ const CartProvider = props => {
         items: cartState.items,
         totalAmount: cartState.totalAmount,
         addItem: addItemToCartHandler,
-        removeItem: removeItemFromCartHandler
+        removeItem: removeItemFromCartHandler,
+        MealsData: cartState.allItems,
+        // addToList: addItemToList
+        
     }
 
     return <CartContext.Provider value={cartContext}>
