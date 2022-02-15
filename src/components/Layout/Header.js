@@ -15,7 +15,7 @@ import {nanoid} from "nanoid";
 const Header = props => {
 
   const cartCtx = useContext(CartContext);
-  // console.log(cartCtx.MealsData);
+  console.log('MealsData render', cartCtx.MealsData);
 
   const [formIsShown, setFormIsShown] = useState(false);
 
@@ -25,27 +25,42 @@ const Header = props => {
     price: ''
   });
 
-  const handleAddFormChange = (e) => {
-    e.preventDefault();
+ 
 
-    const fieldName = e.target.getAttribute('name');
+  // const handleAddFormChange = (e) => {
+  //   e.preventDefault();
 
-    const fieldValue = e.target.value;
+  //   const fieldName = e.target.getAttribute('name');
 
-    const newFormData = {...data}
-    newFormData[fieldName] = fieldValue;
-    // console.log(newFormData);
-    setData(newFormData)
+  //   const fieldValue = e.target.value;
+
+  //   const newFormData = {...data}
+  //   newFormData[fieldName] = fieldValue;
+  //   // console.log(newFormData);
+  //   setData(newFormData)
     
+  // }
+
+  const handleAddFormChange = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value })
   }
+
+  
 
   const handleAddFormSubmit = (e) => {
     e.preventDefault();
     console.log(data);
-    cartCtx.MealsData.push({...data, id: nanoid()});
-    console.log(cartCtx.MealsData);
+    // cartCtx.MealsData.push({...data, id: nanoid()});
+    // console.log(cartCtx.MealsData);
     setFormIsShown(false);
     console.log('re render com')
+    cartCtx.addToList({
+      id: nanoid(),
+      name: data.name,
+      description: data.description,
+      price: +data.price
+    })
+    // cartCtx.addToList({...data, id: nanoid()})
   }
 
   
@@ -74,15 +89,16 @@ const Header = props => {
         </div>
 
         {formIsShown && <Modal onClose={handleClose}> 
-        <form className={classes.form} onSubmit={handleAddFormSubmit} >
+        <form className={classes.former} onSubmit={handleAddFormSubmit} >
           <label htmlFor="name">Name</label>
-          <input type='text' placeholder='text' name="name" onChange={handleAddFormChange} />
+          <input type='text' placeholder='Meal Name here' name="name" onChange={handleAddFormChange} />
           <label htmlFor="name">Description</label>
-          <input type='text' placeholder='text' name="description" onChange={handleAddFormChange} />
+          <textarea rows="5" cols="5" type='text' placeholder='Write Description here' name="description" onChange={handleAddFormChange} />
+          {/* <input type='text' placeholder='Write Description here' name="description" onChange={handleAddFormChange} /> */}
           <label htmlFor="name">Price</label>
-          <input type='text' placeholder='text' name="price" onChange={handleAddFormChange} />
+          <input type='number' placeholder='Enter Price' name="price" onChange={handleAddFormChange} />
           
-          <button type='submit' className={classes.button}>Add Item</button>
+          <button type='submit' className={classes.button1}>Add Item</button>
 
         </form>
         </Modal>}

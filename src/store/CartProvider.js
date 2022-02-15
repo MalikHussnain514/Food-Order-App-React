@@ -11,13 +11,13 @@ const defaultCartState = {
 
 const cartReducer = (state, action) => {
 
-    // if (action.type === 'ADD_TO_LIST') {
-    //     const newArray = [...state.allItems, action.item];
-    //     return {
-    //         ...state,
-    //         allItems:newArray,
-    //     };
-    // }
+    if (action.type === 'ADD_TO_LIST') {
+        const newArray = [ action.item, ...state.allItems ];
+        return {
+            ...state,
+            allItems:newArray,
+        };
+    }
 
     if (action.type === 'ADD') {
         
@@ -76,9 +76,9 @@ const cartReducer = (state, action) => {
 const CartProvider = props => {
     const [cartState, dispatchCartAction] = useReducer(cartReducer, defaultCartState);
 
-    // const addItemToList = item => {
-    //     dispatchCartAction({type: 'ADD_TO_LIST', item: item})
-    // };
+    const addItemToListHandler = item => {
+        dispatchCartAction({type: 'ADD_TO_LIST', item: item})
+    };
 
     const addItemToCartHandler = item => {
         dispatchCartAction({type: 'ADD', item: item})
@@ -94,7 +94,7 @@ const CartProvider = props => {
         addItem: addItemToCartHandler,
         removeItem: removeItemFromCartHandler,
         MealsData: cartState.allItems,
-        // addToList: addItemToList
+        addToList: addItemToListHandler
         
     }
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 
 export const DUMMY_MEALS = [
     {
@@ -33,8 +33,7 @@ const CartContext = React.createContext({
     allItems: DUMMY_MEALS,
     addItem: (item) => {},
     removeItem: (id) => {},
-    // addToList: (item) => {}
-    
+    addToList: (item) => {}
 });
 
 export default CartContext;
